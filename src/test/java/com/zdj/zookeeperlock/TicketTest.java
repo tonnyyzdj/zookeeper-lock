@@ -1,10 +1,12 @@
 package com.zdj.zookeeperlock;
 
+import com.zdj.zookeeperlock.lock.ZookeeperDistributedLock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -17,9 +19,10 @@ import java.util.concurrent.locks.ReentrantLock;
 @SpringBootTest
 public class TicketTest {
 
-    private int count = 30;
+    private int count = 10;
 
-    private Lock lock = new ReentrantLock();
+//    @Resource
+//    private Lock lock ;
 
 
 
@@ -46,6 +49,7 @@ public class TicketTest {
         @Override
         public void run() {
             while(count > 0){
+                Lock lock = new ZookeeperDistributedLock();
                 lock.lock() ;
                 try{
                     if(count > 0){
@@ -66,26 +70,6 @@ public class TicketTest {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
